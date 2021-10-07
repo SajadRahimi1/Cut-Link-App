@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class CustomCard extends StatelessWidget {
-  var link = "".obs;
-
+  CustomCard({required this.link});
+  final link;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,35 +24,25 @@ class CustomCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     color: Color(0xffff7c1f),
                     boxShadow: [BoxShadow(blurRadius: 15)]),
-                child: Obx(() => Text(
-                      link.value,
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    )),
+                child: Text(
+                  link,
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Obx(() => link.value.length > 6
-                      ? Image(
-                          image: NetworkImage(
-                              "http://qr-code.ir/api/qr-code?d=${link.value}"),
-                          height: MediaQuery.of(context).size.height / 4,
-                        )
-                      : Image(
-                          image: AssetImage("asset/img.png"),
-                          height: MediaQuery.of(context).size.height / 4,
-                          width: MediaQuery.of(context).size.width / 2.5,
-                        )),
-                  // FloatingActionButton(
-                  //   onPressed: () {},
-                  //   child: Icon(Icons.share),
-                  // ),
+                  Image(
+                    image:
+                        NetworkImage("http://qr-code.ir/api/qr-code?d=${link}"),
+                    height: MediaQuery.of(context).size.height / 4,
+                  ),
                   Container(
                     padding: EdgeInsets.only(
                         right: MediaQuery.of(context).size.width / 5),
                     child: FloatingActionButton(
                       onPressed: () {
-                        Clipboard.setData(ClipboardData(text: link.value));
+                        Clipboard.setData(ClipboardData(text: link));
                         Get.snackbar("", "",
                             titleText: Text(
                               "لینک کوتاه شده کپی شد",
@@ -73,9 +63,4 @@ class CustomCard extends StatelessWidget {
           )),
     );
   }
-
-  void setLink(String link) {
-    this.link.value = link;
-  }
 }
-//http://qr-code.ir/api/qr-code?d=
